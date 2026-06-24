@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>The-Kinetic-Mesh-Reveal</title>
+    <style>
+        * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px; 
+        align-items: center;
+    }
+   
+   .btn-kinetic {
+  position: relative;
+  background: #0a0a0c;
+  color: #f4f4f5;
+  padding: 14px 32px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  cursor: pointer;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  transition: border-color 0.3s ease;
+}
+
+.btn-blur-layer {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(99,102,241,0.25) 0%, rgba(168,85,247,0.25) 30%, transparent 70%);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.btn-text {
+  position: relative;
+  z-index: 2;
+}
+
+/* Kinetic Interaction */
+.btn-kinetic:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.btn-kinetic:hover .btn-blur-layer {
+  opacity: 1;
+  transform: scale(1) translate(5%, 5%);
+}
+
+.btn-kinetic:active {
+  transform: scale(0.98);
+}
+
+    </style>
+</head>
+<body>
+
+<button class="btn-kinetic">
+  <span class="btn-blur-layer"></span>
+  <span class="btn-text">Launch Console</span>
+</button>
+
+    
+
+
+
+    <script>
+
+        
+    </script>
+</body>
+</html>
