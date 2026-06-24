@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>The-Fluid-Gradient-Slide</title>
+    <style>
+        * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px; 
+        align-items: center;
+    }
+   
+    
+.btn-fluid {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #6366f1 100%);
+  background-size: 200% auto;
+  color: #ffffff;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  transition: all 0.4s ease;
+}
+
+.btn-fluid:hover {
+  background-position: right center;
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+  transform: scale(1.03);
+}
+
+.btn-fluid:active {
+  transform: scale(0.98);
+}
+    </style>
+</head>
+<body>
+
+
+    <button class="btn-fluid">Get Started</button>
+
+
+
+    <script>
+
+        
+    </script>
+</body>
+</html>
