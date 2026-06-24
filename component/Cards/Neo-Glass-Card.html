@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neo-Glass Card</title>
+  <style>
+    /* 1. Global Reset & Modern Variables */
+    
+:root {
+  --bg-gradient: linear-gradient(135deg, #0b0f19 0%, #111827 50%, #1a102f 100%);
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-blur: blur(24px);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-inset-glow: inset 0 0 1px rgba(255, 255, 255, 0.4);
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+  --accent-gradient: linear-gradient(90deg, #2563eb, #9333ea);
+  --text-primary: #fff;
+  --text-secondary: rgba(156, 163, 175, 0.8);
+  --text-emerald: #34d399;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+.ambient-blob-1 {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: rgba(37, 99, 235, 0.25);
+  border-radius: 50%;
+  filter: blur(100px);
+  top: 20%;
+  left: 25%;
+  animation: pulse 6s infinite alternate;
+  z-index: 0;
+}
+.ambient-blob-2 {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: rgba(147, 51, 234, 0.15);
+  border-radius: 50%;
+  filter: blur(120px);
+  bottom: 20%;
+  right: 25%;
+  z-index: 0;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+.card-perspective-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  perspective: 1000px;
+  z-index: 1;
+}
+.outer-glow {
+  position: absolute;
+  inset: 0;
+  background: var(--accent-gradient);
+  border-radius: 24px;
+  opacity: 0;
+  filter: blur(20px);
+  transition: opacity 0.5s ease;
+  z-index: -1;
+}
+.card-perspective-wrapper:hover .outer-glow {
+  opacity: 0.6;
+}
+.neo-glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: var(--glass-inset-glow), var(--card-shadow);
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transform-style: preserve-3d;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 9999px;
+}
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--text-emerald);
+  border-radius: 50%;
+  position: relative;
+}
+.badge-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: var(--text-emerald);
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+.badge-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-emerald);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.action-icon-wrapper {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.card-perspective-wrapper:hover .action-icon-wrapper {
+  color: #3b82f6;
+  border-color: rgba(59, 130, 246, 0.4);
+  background: rgba(59, 130, 246, 0.1);
+}
+.content-area {
+  margin-bottom: 24px;
+}
+.content-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+.main-metric {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+.decimal-accent {
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(59, 130, 246, 0.9);
+  margin-left: 2px;
+}
+.divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent
+  );
+  margin: 20px 0;
+}
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.bento-cell {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 12px;
+  border-radius: 16px;
+}
+.cell-title {
+  font-size: 11px;
+  color: rgba(156, 163, 175, 0.6);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.cell-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.execute-btn {
+  width: 100%;
+  position: relative;
+  background: linear-gradient(
+    90deg,
+    rgba(37, 99, 235, 0.8),
+    rgba(147, 51, 234, 0.8)
+  );
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 14px;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+  transition: all 0.3s ease;
+}
+.execute-btn:hover {
+  background: linear-gradient(90deg, #2563eb, #9333ea);
+  box-shadow: 0 4px 25px rgba(59, 130, 246, 0.4);
+}
+.execute-btn svg {
+  transition: transform 0.3s ease;
+}
+.execute-btn:hover svg {
+  transform: translateX(3px);
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="ambient-blob-1"></div>
+<div class="ambient-blob-2"></div>
+<div class="card-perspective-wrapper" id="glassChassis">
+  <div class="outer-glow"></div>
+  <div class="neo-glass-card" id="glassCard">
+    <div class="card-header">
+      <div class="badge">
+        <div class="badge-dot"></div>
+        <span class="badge-text">Live Metrics</span>
+      </div>
+      <div class="action-icon-wrapper">
+        <svg
+          width="20"
+          height="20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M13 10V3L4 14h7v7l9-11h-7z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div class="content-area">
+      <p class="content-label">Platform Allocation</p>
+      <h1 class="main-metric">
+        $14,285<span class="decimal-accent">.64</span>
+      </h1>
+    </div>
+    <div class="divider"></div>
+    <div class="bento-grid">
+      <div class="bento-cell">
+        <div class="cell-title">Efficiency Rate</div>
+        <div class="cell-value">99.28%</div>
+      </div>
+      <div class="bento-cell">
+        <div class="cell-title">Active Nodes</div>
+        <div class="cell-value">1,402 / T1</div>
+      </div>
+    </div>
+    <button class="execute-btn">
+      Execute Protocol<svg
+        width="16"
+        height="16"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M14 5l7 7m0 0l-7 7m7-7H3"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+
+
+
+  <script>
+    
+    
+  const chassis=document.getElementById('glassChassis');
+const card=document.getElementById('glassCard');
+chassis.addEventListener('mousemove',e=>{
+  const rect=chassis.getBoundingClientRect();
+  const x=e.clientX-rect.left-rect.width/2;
+  const y=e.clientY-rect.top-rect.height/2;
+  const tiltX=y/(rect.height/2)*-6;
+  const tiltY=x/(rect.width/2)*6;
+  card.style.transform=`rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-4px)`
+}
+);
+chassis.addEventListener('mouseleave',()=>{
+  card.style.transform='rotateX(0deg) rotateY(0deg) translateY(0px)'
+}
+);
+
+  </script>
+
+</body>
+</html>
