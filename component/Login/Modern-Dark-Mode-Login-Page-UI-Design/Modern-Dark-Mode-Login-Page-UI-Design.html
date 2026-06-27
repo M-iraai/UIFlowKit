@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Dark Mode Login Page UI Design</title>
+  <style>
+    /* --- CSS RESET & VARIABLE DESIGN TOKENS --- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-space: #030712;
+      --panel-glass: rgba(10, 15, 30, 0.55);
+      --input-bg: rgba(7, 10, 19, 0.7);
+      --accent-blue: #3b82f6;
+      --accent-purple: #a855f7;
+      --text-main: #f8fafc;
+      --text-muted: #64748b;
+      --border-glass: rgba(255, 255, 255, 0.08);
+    }
+
+    body {
+      background-color: var(--bg-space);
+      color: var(--text-main);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 5px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* --- BACKGROUND PARTICLE CANVAS & GLOWS --- */
+    #particle-canvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .ambient-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(160px);
+      mix-blend-mode: plus-lighter;
+      pointer-events: none;
+      z-index: 2;
+      animation: drift 10s ease-in-out infinite alternate;
+    }
+
+    .glow-blue {
+      top: 10%;
+      left: 15%;
+      width: 600px;
+      height: 600px;
+      background: rgba(59, 130, 246, 0.18);
+    }
+
+    .glow-purple {
+      bottom: 5%;
+      right: 15%;
+      width: 500px;
+      height: 500px;
+      background: rgba(168, 85, 247, 0.12);
+      animation-delay: -3s;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 20px) scale(1.1); }
+    }
+
+    /* --- GLASSMOPHISM WRAPPER BOX --- */
+    .login-window {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 960px;
+      min-height: 600px;
+      background: var(--panel-glass);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border: 1px solid var(--border-glass);
+      box-shadow: 
+        inset 0 0 1px rgba(255, 255, 255, 0.2),
+        0 24px 64px -16px rgba(0, 0, 0, 0.7);
+      border-radius: 28px;
+      display: flex;
+      overflow: hidden;
+      transition: border-color 0.3s ease;
+    }
+
+    /* --- ART CONTAINER COLUMN (LEFT) --- */
+    .art-frame {
+      flex: 1;
+      
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      
+     
+    }
+
+   
+
+ 
+   
+   .art-frame img{
+     width: 100%;
+    height: 100%;
+    object-fit: cover;
+} 
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* --- FORM ENTRY CONTAINER (RIGHT) --- */
+    .form-frame {
+      flex: 1.2;
+      padding: 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-header {
+      margin-bottom: 36px;
+    }
+
+    .form-header h2 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .form-header p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* PREMIUM INTERACTIVE FIELDS */
+    .input-wrapper {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 18px 16px 18px 48px;
+      background: var(--input-bg);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      outline: none;
+      font-size: 14px;
+      color: var(--text-main);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .input-field:focus {
+      border-color: rgba(59, 130, 246, 0.6);
+      box-shadow: 
+        0 0 0 4px rgba(59, 130, 246, 0.12),
+        inset 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .input-label {
+      position: absolute;
+      left: 48px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: #475569;
+      pointer-events: none;
+      transition: transform 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+    }
+
+    /* Handle labels dynamically on interaction */
+    .input-field:focus ~ .input-label,
+    .input-field:not(:placeholder-shown) ~ .input-label {
+      transform: translateY(-165%);
+      font-size: 11px;
+      color: var(--accent-blue);
+      left: 14px;
+    }
+
+    .field-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: #475569;
+      pointer-events: none;
+      transition: color 0.2s ease;
+    }
+
+    .input-field:focus ~ .field-icon {
+      color: var(--accent-blue);
+    }
+
+    .utilities-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      font-size: 13px;
+    }
+
+    .remember-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .remember-container input {
+      accent-color: var(--accent-blue);
+    }
+
+    .forgot-anchor {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .forgot-anchor:hover { color: var(--text-main); }
+
+    /* CORE CTAs */
+    .action-submit {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      border: none;
+      border-radius: 14px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .action-submit:hover {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      box-shadow: 0 6px 24px rgba(37, 99, 235, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .toggle-view-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 24px;
+      margin-bottom: 28px;
+    }
+
+    .toggle-view-text a {
+      color: var(--accent-blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .split-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #334155;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 24px;
+    }
+
+    .split-divider::before, .split-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .split-divider:not(:empty)::before { margin-right: 1em; }
+    .split-divider:not(:empty)::after { margin-left: 1em; }
+
+    /* IDENTITY PROVIDERS */
+    .oauth-box {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .oauth-btn {
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .oauth-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .oauth-svg { width: 16px; height: 16px; }
+
+    /* RESPONSIVE LAYOUT MATRIX */
+    @media (max-width: 840px) {
+      .login-window { max-width: 460px; flex-direction: column; }
+      .art-frame { display: none; }
+      .form-frame { padding: 40px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- DYNAMIC DEPTH SYSTEM -->
+  <canvas id="particle-canvas"></canvas>
+  <div class="ambient-glow glow-blue"></div>
+  <div class="ambient-glow glow-purple"></div>
+
+  <!-- CONTAINER COMPONENT -->
+  <main class="login-window">
+    
+    <!-- LEFT PRESENTATION FRAME -->
+    <div class="art-frame">
+      <img src="https://cdn.pixabay.com/photo/2024/12/28/05/28/sydney-9295243_960_720.jpg">
+    </div>
+
+    <!-- RIGHT INPUT CORE -->
+    <div class="form-frame">
+      <div class="form-header">
+        <h2>Welcome Back</h2>
+        <p>Enter your credentials to access your terminal.</p>
+      </div>
+
+      <form onsubmit="event.preventDefault();">
+        
+        <!-- User Identity Entry -->
+        <div class="input-wrapper">
+          <input type="email" id="email-field" class="input-field" placeholder=" " autocomplete="off" required>
+          <svg class="field-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206" />
+          </svg>
+          <label for="email-field" class="input-label">Email Address</label>
+        </div>
+
+        <!-- Token/Secret Field -->
+        <div class="input-wrapper">
+          <input type="password" id="pass-field" class="input-field" placeholder=" " required>
+          <svg class="field-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <label for="pass-field" class="input-label">Password</label>
+        </div>
+
+        <!-- Controls Row -->
+        <div class="utilities-row">
+          <label class="remember-container">
+            <input type="checkbox"> Remember device
+          </label>
+          <a href="#" class="forgot-anchor">Recover access</a>
+        </div>
+
+        <button type="submit" class="action-submit">Authorize Terminal</button>
+
+        <p class="toggle-view-text">New to the platform? <a href="#">Create account</a></p>
+
+        <div class="split-divider">or identify with</div>
+
+        <!-- Identity Providers Grid -->
+        <div class="oauth-box">
+          <button type="button" class="oauth-btn">
+            <svg class="oauth-svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+            </svg>
+            Google
+          </button>
+          <button type="button" class="oauth-btn">
+            <svg class="oauth-svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.21.67-2.93 1.49-.62.69-1.16 1.84-1.01 2.96 1.12.09 2.27-.57 2.95-1.39z"/>
+            </svg>
+            Apple ID
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- BACKGROUND MATH GENERATED PARTICLES EFFECT -->
+  <script>
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let particles = [];
+    const count = 35;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 1.5 + 0.5;
+        this.speedX = Math.random() * 0.2 - 0.1;
+        this.speedY = Math.random() * 0.2 - 0.1;
+        this.opacity = Math.random() * 0.5 + 0.2;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function init() {
+      resize();
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+    init();
+    animate();
+  </script>
+</body>
+</html>
